@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -62,8 +63,10 @@ func unpackAndInit(dir string, platform string, target string, terraformDir stri
 	}
 
 	// Explicitly specify the CLI config file to use so that we control the providers that are used.
+	logrus.Infof("Setting TF_CLI_CONFIG_FILE to %s", filepath.Join(dir, "terraform.rc"))
 	os.Setenv("TF_CLI_CONFIG_FILE", filepath.Join(dir, "terraform.rc"))
 
+	logrus.Infof("Plugin dir is %+v", tfexec.PluginDir(filepath.Join(terraformDir, "plugins")))
 	return errors.Wrap(
 		tf.Init(context.Background(), tfexec.PluginDir(filepath.Join(terraformDir, "plugins"))),
 		"failed doing terraform init",

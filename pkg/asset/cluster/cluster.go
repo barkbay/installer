@@ -107,7 +107,8 @@ func (c *Cluster) Generate(parents asset.Parents) (err error) {
 		return errors.Wrap(err, "cannot get absolute path of terraform directory")
 	}
 
-	defer os.RemoveAll(terraformDir)
+	logrus.Infof("Terraform dir %s will not be cleaned", terraformDirPath)
+	//defer os.RemoveAll(terraformDir)
 	terraform.UnpackTerraform(terraformDirPath, stages)
 
 	logrus.Infof("Creating infrastructure resources...")
